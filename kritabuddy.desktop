@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=Krita/PythonPlugin
+X-KDE-Library=kritabuddy
+X-Python-2-Compatible=false
+X-Krita-Manual=manual.html
+Name=kritabuddy
+Comment=Add a desktop pet to your Krita panel!

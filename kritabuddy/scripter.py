@@ -1,15 +1,21 @@
 from PyQt6.QtWidgets import *
 from PyQt6.QtGui import *
+from PyQt6.QtCore import *
 from krita import *
 from time import sleep
 
+h = 150
+w = 85
 class root(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
         # sprite
-        self.img = QPixmap("/home/bunnyguy/.var/app/org.kde.krita/data/krita/pykrita/kritabuddy/img/idle.png").scaledToHeight(200)
+        #self.img = QPixmap("/home/bunnyguy/.var/app/org.kde.krita/data/krita/pykrita/kritabuddy/img/idle.png").scaledToHeight(200)
+        self.img = QMovie("/home/bunnyguy/.var/app/org.kde.krita/data/krita/pykrita/kritabuddy/img/idle.gif")
+        self.img.setScaledSize(QSize(w,h))
+        self.img.start()        
         self.sprite = QLabel()
-        self.sprite.setPixmap(self.img)
+        self.sprite.setMovie(self.img)
         self.sprite.mousePressEvent = self.clicked
 
         # display sprite in widget
@@ -17,10 +23,12 @@ class root(QWidget):
         self.layout.setContentsMargins(0,0,0,0)
         self.layout.addWidget(self.sprite)
         self.setLayout(self.layout)
-        self.setFixedSize(self.img.width(),self.img.height())
+        self.setFixedSize(w,h)#self.img.width(),self.img.height())
         
+        self.move(parent.width()-w,parent.height()-h)
         # animation
-        self.localmove(0,0,50,50,500)
+        self.localmove(0,parent.height()-h,
+                       parent.width()-w,parent.height()-h,30000)
         self.pos.start()
     def clicked(self, event):
         self.hide()
@@ -31,6 +39,5 @@ class root(QWidget):
         self.pos.setStartValue(QPoint(x, y))
         self.pos.setEndValue(QPoint(dx, dy))
 
-print(Krita.instance().activeWindow().qwindow().centralWidget())
 root(Krita.instance().activeWindow().qwindow().centralWidget()).show()
 #root().show()
